@@ -1,0 +1,108 @@
+#!/bin/bash -e
+
+F="./src/main/java/com/martiansoftware/log/Log.java"
+if [ ! -f $F ]; then
+    echo "This must be run from the project root." >&2
+    exit 1
+fi
+
+OUT="target/scripts/Log.java"
+mkdir -p `dirname $OUT`
+
+DELIM="## BEGIN GENERATED CODE - DO NOT EDIT BELOW THIS LINE ##"
+
+# copy everything up to the generated code delimiter
+sed -n "/$DELIM/q;p" $F > $OUT
+
+# stick it back in for idempotence
+echo "// $DELIM" >> $OUT
+
+
+function generateLevel() {
+    local LEVEL="$1"
+cat <<EOF
+    @Override public boolean is${LEVEL^}Enabled() {
+        return _delegate.is${LEVEL^}Enabled();
+    }
+
+    @Override public boolean is${LEVEL^}Enabled(Marker marker) {
+        return _delegate.is${LEVEL^}Enabled(marker);
+    }
+
+    @Override public void ${LEVEL}(String msg) {
+        if(is${LEVEL^}Enabled()) {
+            _delegate.${LEVEL}(tweak(msg));
+        }
+    }
+
+    @Override public void ${LEVEL}(String format, Object arg) {
+        if(is${LEVEL^}Enabled()) {
+            _delegate.${LEVEL}(tweak(MessageFormatter.format(format, arg).getMessage()));
+        }
+    }
+
+    @Override public void ${LEVEL}(String format, Object arg1, Object arg2) {
+        if(is${LEVEL^}Enabled()) {
+            _delegate.${LEVEL}(tweak(MessageFormatter.format(format, arg1, arg2).getMessage()));
+        }
+    }
+
+    @Override public void ${LEVEL}(String format, Object... arguments) {
+        if(is${LEVEL^}Enabled()) {
+            _delegate.${LEVEL}(tweak(MessageFormatter.format(format, arguments).getMessage()));
+        }
+    }
+
+    @Override public void ${LEVEL}(String msg, Throwable t) {
+        if (is${LEVEL^}Enabled()) {
+            _delegate.${LEVEL}(tweak(msg), t);
+            handleThrowable(t);
+        }
+    }
+
+    @Override public void ${LEVEL}(Marker marker, String msg) {
+        if (is${LEVEL^}Enabled()) {
+            _delegate.${LEVEL}(marker, tweak(msg));
+        }
+    }
+
+    @Override public void ${LEVEL}(Marker marker, String format, Object arg) {
+        if(is${LEVEL^}Enabled()) {
+            _delegate.${LEVEL}(marker, tweak(MessageFormatter.format(format, arg).getMessage()));
+        }
+    }
+
+    @Override public void ${LEVEL}(Marker marker, String format, Object arg1, Object arg2) {
+        if(is${LEVEL^}Enabled()) {
+            _delegate.${LEVEL}(marker, tweak(MessageFormatter.format(format, arg1, arg2).getMessage()));
+        }
+    }
+
+    @Override public void ${LEVEL}(Marker marker, String format, Object... arguments) {
+        if(is${LEVEL^}Enabled()) {
+            _delegate.${LEVEL}(marker, tweak(MessageFormatter.format(format, arguments).getMessage()));
+        }
+    }
+
+    @Override public void ${LEVEL}(Marker marker, String msg, Throwable t) {
+        if (is${LEVEL^}Enabled()) {
+            _delegate.${LEVEL}(marker, tweak(msg), t);
+            handleThrowable(t);
+        }
+    }
+
+EOF
+
+}
+
+for LEVELNAME in trace debug info warn error; do
+    generateLevel ${LEVELNAME} >> $OUT
+done
+
+# close the class
+echo "}" >> $OUT
+
+if [ -f $OUT ]; then
+    rm $F
+    cp $OUT $F
+fi
