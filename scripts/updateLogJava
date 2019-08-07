@@ -1,4 +1,14 @@
 #!/bin/bash -e
+#
+# Run this from the project root with no arguments to update the generated
+# code inside the com.martiansoftware.log.Log class.
+#
+# The generate code implements the repetitive per-level methods.  If
+# the slf4j api adds/removes/modifies any logging methods, then this
+# script should be updated accordingly.
+#
+# As far as code generation tools go, this is low-rent and effective.
+#
 
 F="./src/main/java/com/martiansoftware/log/Log.java"
 if [ ! -f $F ]; then
