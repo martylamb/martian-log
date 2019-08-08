@@ -4,7 +4,7 @@ An extension of the slf4j Logger that provides some additional functionality:
 
   * Marginally less boilerplate for obtaining a Logger:  `Log log = Log.me()`
   * The ability to create "subloggers" with a fixed prefix via `Log.withPrefix(String)`
-  * The ability to register both blobal and Log-specific handlers for any `Throwables` that are logged (handlers are not called if the corresponding logging level is not enabled).
+  * The ability to register both global and Log-specific handlers for any `Throwables` that are logged (handlers are not called if the corresponding logging level is not enabled).  This can be used to trigger error reporting to a server, uploading of logs, etc.
   * Addition of an alternative `SingleLevelLogger` interface available from the `Log` as fields, offering:
     * `String.format()` semantics, e.g. `log.debug.format(...)`
     * The ability to log a bare throwable
