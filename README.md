@@ -3,18 +3,18 @@
 An extension of the slf4j Logger that provides some additional functionality:
 
   * Marginally less boilerplate for obtaining a Logger:  `Log log = Log.me()`
-  * The ability to create "subloggers" with a fixed prefix via `Log.withPrefix(String)`
+  * The ability to create "subloggers" with a fixed prefix log message prefix via `Log.withPrefix(String)`
   * The ability to register both global and Log-specific handlers for any `Throwables` that are logged (handlers are not called if the corresponding logging level is not enabled).  This can be used to trigger error reporting to a server, uploading of logs, etc.
   * Addition of an alternative `SingleLevelLogger` interface available from the `Log` as fields, offering:
     * `String.format()` semantics, e.g. `log.debug.format(...)`
-    * The ability to log a bare throwable
+    * The ability to log a bare throwable (with no corresponding message or format)
     * The ability to pass a level-specific logger as a parameter within your code
     * Support for ansi coloring via [jansi](http://fusesource.github.io/jansi/), e.g. `log.cout.print("@|red Hello|@ @|green World|@")`
-    * Three new log "levels" in addition to the standard slf4j levels because sometimes you want output to the console as well as your log files (output always goes to console and conditionally goes to other loggers depending on whether they are enabled):
+    * Three new log "levels" in addition to the standard slf4j levels -- because sometimes you want output to the console as well as to your log files (output always goes to console and conditionally goes to other loggers depending on whether they are enabled):
       * `cout` sends output to stdout **and** to info logger
       * `cwarn` sends output to stderr (colored yellow via [jansi](http://fusesource.github.io/jansi/) when stderr supports it) **and** to warning logger
       * `cerr` sends output to stderr (colored red via [jansi](http://fusesource.github.io/jansi/) when stderr supports it) **and** to error logger
-    * An Autocloseable `stopwatch` logger that will log its total time (from creation to close) to the level that produced the stopwatch, and optionally log warnings or errors if specified threshold times are exceeded.
+    * An Autocloseable `StopwatchLog` that will log its total time (from creation to close) to the level that produced the stopwatch, and optionally log warnings or errors if specified threshold times are exceeded.
       
 **It is a project goal to remain 100% compatible with slf4j, and to not impact any existing logging or log configuration.**
 
