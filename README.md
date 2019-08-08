@@ -1,4 +1,4 @@
-# log
+# martian-log
 
 An extension of the slf4j Logger that provides some additional functionality:
 
@@ -16,7 +16,7 @@ An extension of the slf4j Logger that provides some additional functionality:
       * `cerr` sends output to stderr (colored red via [jansi](http://fusesource.github.io/jansi/) when stderr supports it) **and** to error logger
     * An Autocloseable `StopwatchLog` that will log its total time (from creation to close) to the level that produced the stopwatch, and optionally log warnings or errors if specified threshold times are exceeded.
       
-**It is a project goal to remain 100% compatible with slf4j, and to not impact any existing logging or log configuration.**
+**It is a project goal to remain 100% compatible with slf4j, to allow use side-by-side with vanilla slf4j use, and to not impact any existing logging or log configuration.**
 
 **Note:** For minimum impact on existing applications, this library does NOT declare a transitive dependency on slf4j (and thus cannot create any dependency conflicts).  Your project will still need to handle this dependency as if you were not using this library at all.
 
