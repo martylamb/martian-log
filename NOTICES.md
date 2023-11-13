@@ -5,8 +5,8 @@
 On 2023-11-13, I cleaned up some incorrect contact information (user.name and user.email) in the commit history via [git-filter-repo](https://github.com/newren/git-filter-repo).
 
 ### For Clones Made Before 2023-11-13
-1. Fetch the updated history and tags with 
-2. For each local branch, rebase onto the updated remote branch with  (Replace  with the name of each branch you have checked out.)
+1. Fetch the updated history and tags with `git fetch --force --all --tags`
+2. For each local branch, rebase onto the updated remote branch with `git checkout <branch-name>; git rebase origin/<branch-name>` (Replace  with the name of each branch you have checked out.)
 
 ### For New Clones (After 2023-11-13):
 - No action is needed.  You can clone the repository as usual.
