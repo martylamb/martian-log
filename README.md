@@ -1,3 +1,4 @@
+**Important Notice**: [Repository History Change on 2023-11-13](./NOTICES.md#repository-history-change---2023-11-13)
 # martian-log
 
 An extension of the slf4j Logger that provides some additional functionality:
